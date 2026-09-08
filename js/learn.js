@@ -194,7 +194,7 @@
     $("writeLetter").textContent = writeTarget.ar;
     const host = $("writeCell");
     host.innerHTML = "";
-    host.appendChild(makeCell([], "big interactive write", true));
+    host.appendChild(makeCell([], "big interactive write"));
     for (const dot of host.querySelectorAll(".dot")) {
       dot.addEventListener("click", () => {
         dot.classList.toggle("on");
@@ -218,7 +218,7 @@
       fb.classList.add("ok");
     } else {
       fb.textContent = "نقرت على النقط " + on.join("، ") + " — حرف " + writeTarget.name + " نقاطه " + writeTarget.dots.join("، ") +
-        ". افتكر: وضع الكتابة معكوس — النقاط ١، ٢، ٣ في العمود اليمين و٤، ٥، ٦ في الشمال.";
+        ". افتكر: النقاط ١، ٢، ٣ في العمود الشمال و٤، ٥، ٦ في اليمين.";
       fb.classList.add("bad");
     }
   });
