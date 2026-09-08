@@ -173,7 +173,8 @@ h2 { font-size: 1.8rem; margin: 0 0 26px; }
 .howto { text-align: start; }
 .capability { color: var(--accent); }
 .vibe-check { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 8px 0; }
-.vibe-check #vibeStatus { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+.vibe-status { color: var(--muted); font-size: 0.9rem; line-height: 1.8; margin: 6px 0 0; }
+.vibe-status div { border-inline-start: 3px solid var(--line); padding-inline-start: 10px; margin-bottom: 2px; }
 .toggle { display: inline-flex; gap: 8px; align-items: center; color: var(--muted); cursor: pointer; }
 
 .tcell { display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; gap: 18px; direction: ltr; width: min(320px, 86vw); height: 440px; margin: 0 auto 20px; background: var(--card); border: 2px solid var(--line); border-radius: 24px; padding: 26px; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }

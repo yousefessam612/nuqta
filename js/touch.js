@@ -5,17 +5,54 @@
   const soundToggle = $("soundToggle");
   soundToggle.addEventListener("change", () => { soundOn = soundToggle.checked; });
 
-  $("vibeTest").addEventListener("click", () => {
+  function vibeStatusLines(lines) {
     const st = $("vibeStatus");
-    if (!hasVibrate) {
-      st.textContent = "المتصفح ده ما بيدعمش الاهتزاز (زي سفاري آيفون) — سيب الصوت شغّال.";
+    st.innerHTML = "";
+    for (const t of lines) {
+      const p = document.createElement("div");
+      p.textContent = t;
+      st.appendChild(p);
+    }
+  }
+
+  $("vibeTest").addEventListener("click", () => {
+    const lines = [];
+    const secure = typeof window.isSecureContext !== "undefined" ? window.isSecureContext : null;
+    lines.push(secure === true ? "الصفحة آمنة (HTTPS): ✓" : "الصفحة آمنة (HTTPS): ✗ — الاهتزاز مش ه يشتغل");
+
+    if (!("vibrate" in navigator)) {
+      lines.push("المتصفح ما بيدعمش الاهتزاز خالص: ✗");
+      vibeStatusLines(lines);
       return;
     }
-    let ok = false;
-    try { ok = navigator.vibrate([150, 80, 150]); } catch (e) { ok = false; }
-    st.textContent = ok
-      ? "تمّ إرسال أمر الاهتزاز — لو محسّيتش بحاجة: افحص وضع الصوت والاهتزاز في إعدادات الجهاز (أو وضع توفير الطاقة)، أو جرّب متصفح كروم."
-      : "المتصفح رفض أمر الاهتزاز — جرّب متصفح كروم أو فايرفوكس، أو اعتمد على الصوت.";
+    lines.push("المتصفح بيدعم الاهتزاز: ✓");
+
+    let ret = null;
+    try { ret = navigator.vibrate([150, 80, 150, 80, 150]); } catch (e) { ret = null; }
+    lines.push(ret === true
+      ? "المتصفح قبل أمر الاهتزاز: ✓ — لو عمره ما حسّيت بحاجة رغم كده، المشكلة من الجهاز/نظام التشغيل مش من الموقع"
+      : "المتصفح رفض أمر الاهتزاز: ✗ — جرّب متصفح تاني أو اعتمد على الصوت");
+
+    const ua = navigator.userAgent;
+    const hasChrome = /Chrome\/(\d+)/.exec(ua);
+    const firefox = /Firefox\/(\d+)/.exec(ua);
+    lines.push(firefox
+      ? "المتصفح: فايرفوكس " + firefox[1]
+      : hasChrome
+        ? (/Edg\//.test(ua) ? "المتصفح: إيدج (كروم " + hasChrome[1] + ")"
+          : /SamsungBrowser/.test(ua) ? "المتصفح: سامسونج إنترنت (كروم " + hasChrome[1] + ")"
+          : "المتصفح: كروم " + hasChrome[1])
+        : "المتصفح: غير معروف — " + ua.slice(0, 40));
+
+    vibeStatusLines(lines);
+  });
+
+  $("vibeLong").addEventListener("click", () => {
+    let ret = null;
+    try { ret = navigator.vibrate(2000); } catch (e) { ret = null; }
+    vibeStatusLines([ret === true
+      ? "اتبعت اهتزاز ٢ ثانية — لو ما حسّيتوش: بص لإعدادات الطاقة (توفير الطاقة بيلغي الاهتزاز في كروم تمامًا) أو جرّب متصفح فايرفوكس."
+      : "المتصفح رفض الاهتزاز — اعتمد على الصوت."]);
   });
 
   const hasVibrate = "vibrate" in navigator;
