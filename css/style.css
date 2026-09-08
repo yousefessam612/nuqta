@@ -279,3 +279,27 @@ body.reader-light .bcell .dot.on { background: var(--accent); box-shadow: none; 
   width: 100%; padding-top: 10px; margin-top: 6px;
   border-top: 1px dashed var(--line);
 }
+
+.visitor-badge {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(22, 33, 58, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+  opacity: 0.75;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+.visitor-badge:hover { opacity: 1; border-color: var(--accent); color: var(--text); }
+.visitor-badge svg { flex-shrink: 0; }
+.visitor-badge img { display: block; height: 20px; width: auto; max-width: 140px; }
+body.reader-light .visitor-badge { background: rgba(255, 255, 255, 0.9); }
