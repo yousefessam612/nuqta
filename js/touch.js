@@ -71,36 +71,6 @@
       : "المتصفح رفض الاهتزاز — اقفل توفير البيانات والطاقة من إعدادات كروم وجرب تاني."]);
   });
 
-  $("vibeCopy").addEventListener("click", () => {
-    const text = ($("vibeStatus").innerText || "").trim();
-    if (!text) {
-      vibeStatusLines(["اضغط «فحص الاهتزاز» الأول وبعدين انسخ."]);
-      return;
-    }
-    const btn = $("vibeCopy");
-    const done = () => {
-      const old = btn.textContent;
-      btn.textContent = "تم النسخ ✓";
-      setTimeout(() => { btn.textContent = old; }, 1800);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
-    } else {
-      fallbackCopy(text, done);
-    }
-  });
-
-  function fallbackCopy(text, done) {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand("copy"); done(); } catch (e) {}
-    ta.remove();
-  }
-
   const hasVibrate = "vibrate" in navigator;
   $("capLine").textContent = hasVibrate
     ? "متصفحك يقول إنه يدعم الاهتزاز — طول ما إصبعك على نقطة بارزة: اهتزاز مستمر."
