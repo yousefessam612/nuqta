@@ -29,7 +29,25 @@ const BRAILLE_LETTERS = [
   { ar: "ي", name: "يَاء", dots: [2, 4], example: "يد" }
 ];
 
+// ===== فصل التمثيل المنطقي عن الإحداثيات البصرية =====
+// الأرقام المنطقية للنقط (1..6) ثابتة دائمًا: هي المستخدمة في بيانات الحروف
+// وفي التحقق من الإجابات — لا تتغير مع تغيير وضع العرض.
+// الترتيب أدناه هو ترتيب أبناء الخلية في شبكة العمودين (row-major):
+// أول عنصرين = الصف الأول (العمود الأول ثم الثاني)، وهكذا.
+// كل عنصر يحمل رقمه المنطقي في dataset.dot.
+
+// وضع القراءة (الدرس، اختبار القراءة، حسّ النقط):
+//   صف 1:  1  4
+//   صف 2:  2  5
+//   صف 3:  3  6
 const DOT_GRID_ORDER = [1, 4, 2, 5, 3, 6];
+
+// وضع الكتابة (محاكاة الكتابة على اللوح من الخلف — الخلية معكوسة أفقيًا):
+//   صف 1:  4  1
+//   صف 2:  5  2
+//   صف 3:  6  3
+// الموضع البصري يمين-أعلى => النقطة 1، والموضع شمال-أعلى => النقطة 4.
+// أرقام النقط نفسها لا تتغير — يتغير موقع عرضها فقط.
 const DOT_GRID_ORDER_WRITE = [4, 1, 5, 2, 6, 3];
 
 function makeCell(dots, extraClass, mirrored) {
@@ -151,5 +169,5 @@ function renderTextToBraille(host, text) {
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { BRAILLE_LETTERS, BRAILLE_EXTRA, BRAILLE_DIGITS, BRAILLE_PUNCT, NUMBER_SIGN, dotsToBraille, brailleWord, letterByAr, textToBrailleCells };
+  module.exports = { BRAILLE_LETTERS, BRAILLE_EXTRA, BRAILLE_DIGITS, BRAILLE_PUNCT, NUMBER_SIGN, DOT_GRID_ORDER, DOT_GRID_ORDER_WRITE, dotsToBraille, brailleWord, letterByAr, textToBrailleCells };
 }

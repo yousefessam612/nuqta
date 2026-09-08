@@ -194,7 +194,9 @@
     $("writeLetter").textContent = writeTarget.ar;
     const host = $("writeCell");
     host.innerHTML = "";
-    host.appendChild(makeCell([], "big interactive write"));
+    // خلية وضع الكتابة: تُعرض بترتيب الكتابة المعكوس (النقط 1،2،3 في العمود اليمين).
+    // كل دايرة تحمل رقمها المنطقي في dataset.dot — والتحقق يقارن الأرقام المنطقية.
+    host.appendChild(makeCell([], "big interactive write", true));
     for (const dot of host.querySelectorAll(".dot")) {
       dot.addEventListener("click", () => {
         dot.classList.toggle("on");
@@ -217,8 +219,8 @@
       fb.textContent = "ممتاز! النقط صح.";
       fb.classList.add("ok");
     } else {
-      fb.textContent = "نقرت على النقط " + on.join("، ") + " — حرف " + writeTarget.name + " نقاطه " + writeTarget.dots.join("، ") +
-        ". افتكر: النقاط ١، ٢، ٣ في العمود الشمال و٤، ٥، ٦ في اليمين.";
+      fb.textContent = "نقرت على النقط المنطقية " + on.join("، ") + " — حرف " + writeTarget.name + " نقاطه " + writeTarget.dots.join("، ") +
+        ". افتكر: وضع الكتابة معكوس — النقاط ١، ٢، ٣ في العمود اليمين و٤، ٥، ٦ في الشمال.";
       fb.classList.add("bad");
     }
   });
