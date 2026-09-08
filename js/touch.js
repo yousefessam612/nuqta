@@ -15,34 +15,50 @@
     }
   }
 
+  function detectBrowser(ua) {
+    if (/FBAN|FBAV/i.test(ua)) return "متصفح فيسبوك الداخلي — الاهتزاز غالبًا معطّل فيه. افتح اللينك من تطبيق كروم نفسه";
+    if (/Instagram/i.test(ua)) return "متصفح إنستجرام الداخلي — افتح من كروم";
+    if (/MiuiBrowser|XiaoMi/i.test(ua)) return "متصفح شاومي الأصلي — الاهتزاز فيه مش مضمون. جرّب كروم";
+    if (/VivoBrowser/i.test(ua)) return "متصفح فيفو الأصلي — جرّب كروم";
+    if (/HeyTapBrowser|OppoBrowser/i.test(ua)) return "متصفح أوبو الأصلي — جرّب كروم";
+    if (/HuaweiBrowser/i.test(ua)) return "متصفح هواوي — جرّب كروم";
+    if (/; wv\)/.test(ua)) return "WebView داخل تطبيق تاني — افتح اللينك من كروم مباشرة";
+    if (/SamsungBrowser\/([\d.]+)/.test(ua)) return "سامسونج إنترنت " + /SamsungBrowser\/([\d.]+)/.exec(ua)[1];
+    const fx = /Firefox\/(\d+)/.exec(ua);
+    if (fx) return "فايرفوكس " + fx[1];
+    const ch = /Chrome\/(\d+)/.exec(ua);
+    if (ch) {
+      if (/Edg\/([\d.]+)/.test(ua)) return "إيدج " + /Edg\/([\d.]+)/.exec(ua)[1];
+      if (/OPR\//.test(ua)) return "أوبرا";
+      return "كروم " + ch[1] + " ✓ متصفح مظبوط";
+    }
+    return "غير معروف — " + ua.slice(0, 60);
+  }
+
   $("vibeTest").addEventListener("click", () => {
     const lines = [];
     const secure = typeof window.isSecureContext !== "undefined" ? window.isSecureContext : null;
     lines.push(secure === true ? "الصفحة آمنة (HTTPS): ✓" : "الصفحة آمنة (HTTPS): ✗ — الاهتزاز مش ه يشتغل");
 
     if (!("vibrate" in navigator)) {
-      lines.push("المتصفح ما بيدعمش الاهتزاز خالص: ✗");
+      lines.push("دعم الاهتزاز في المتصفح: ✗ غير موجود خالص");
+      lines.push("المتصفح: " + detectBrowser(navigator.userAgent));
       vibeStatusLines(lines);
       return;
     }
-    lines.push("المتصفح بيدعم الاهتزاز: ✓");
+    lines.push("دعم الاهتزاز في المتصفح: ✓");
 
     let ret = null;
     try { ret = navigator.vibrate([150, 80, 150, 80, 150]); } catch (e) { ret = null; }
     lines.push(ret === true
-      ? "المتصفح قبل أمر الاهتزاز: ✓ — لو عمره ما حسّيت بحاجة رغم كده، المشكلة من الجهاز/نظام التشغيل مش من الموقع"
-      : "المتصفح رفض أمر الاهتزاز: ✗ — جرّب متصفح تاني أو اعتمد على الصوت");
+      ? "المتصفح قبل أمر الاهتزاز: ✓"
+      : "المتصفح رفض أمر الاهتزاز: ✗ — توفير البيانات أو توفير الطاقة في كروم بيلغيه: اقفله من إعدادات كروم");
 
-    const ua = navigator.userAgent;
-    const hasChrome = /Chrome\/(\d+)/.exec(ua);
-    const firefox = /Firefox\/(\d+)/.exec(ua);
-    lines.push(firefox
-      ? "المتصفح: فايرفوكس " + firefox[1]
-      : hasChrome
-        ? (/Edg\//.test(ua) ? "المتصفح: إيدج (كروم " + hasChrome[1] + ")"
-          : /SamsungBrowser/.test(ua) ? "المتصفح: سامسونج إنترنت (كروم " + hasChrome[1] + ")"
-          : "المتصفح: كروم " + hasChrome[1])
-        : "المتصفح: غير معروف — " + ua.slice(0, 40));
+    lines.push("المتصفح: " + detectBrowser(navigator.userAgent));
+
+    if (secure === true && ret === true) {
+      lines.push("الخلاصة: كل حاجة سليمة من جهة الموقع والمتصفح — لو مش محس بيهتزاز، المشكلة من الجهاز نفسه: شيل وضع توفير الطاقة، وارفع قوة الاهتزاز من إعدادات الصوت والاهتزاز في نظام أندرويد.");
+    }
 
     vibeStatusLines(lines);
   });
@@ -51,14 +67,44 @@
     let ret = null;
     try { ret = navigator.vibrate(2000); } catch (e) { ret = null; }
     vibeStatusLines([ret === true
-      ? "اتبعت اهتزاز ٢ ثانية — لو ما حسّيتوش: بص لإعدادات الطاقة (توفير الطاقة بيلغي الاهتزاز في كروم تمامًا) أو جرّب متصفح فايرفوكس."
-      : "المتصفح رفض الاهتزاز — اعتمد على الصوت."]);
+      ? "اتبعت اهتزاز ٢ ثانية — لو ما حسّيتوش: المشكلة من الجهاز/النظام مش من الموقع. شيل توفير الطاقة وارفع قوة الاهتزاز من إعدادات أندرويد."
+      : "المتصفح رفض الاهتزاز — اقفل توفير البيانات والطاقة من إعدادات كروم وجرب تاني."]);
   });
+
+  $("vibeCopy").addEventListener("click", () => {
+    const text = ($("vibeStatus").innerText || "").trim();
+    if (!text) {
+      vibeStatusLines(["اضغط «فحص الاهتزاز» الأول وبعدين انسخ."]);
+      return;
+    }
+    const btn = $("vibeCopy");
+    const done = () => {
+      const old = btn.textContent;
+      btn.textContent = "تم النسخ ✓";
+      setTimeout(() => { btn.textContent = old; }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  });
+
+  function fallbackCopy(text, done) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) {}
+    ta.remove();
+  }
 
   const hasVibrate = "vibrate" in navigator;
   $("capLine").textContent = hasVibrate
-    ? "متصفحك يقول إنه يدعم الاهتزاز — لو مش شغال معاك استخدم زر الاختبار تحت."
-    : "متصفحك ما يدعمش الاهتزاز (زي سفاري على آيفون) — سيب الصوت شغّال: كل نقطة تصفّرة.";
+    ? "متصفحك يقول إنه يدعم الاهتزاز — طول ما إصبعك على نقطة بارزة: اهتزاز مستمر."
+    : "متصفحك ما يدعمش الاهتزاز (زي سفاري آيفون) — الصوت شغّال بمكان كل نقطة.";
 
   const audio = {
     ctx: null,
@@ -84,21 +130,32 @@
       osc.start();
       osc.stop(ctx.currentTime + dur);
     },
-    hit() { this.tone(950, 0.1, "sine", 0.22); },
+    hit(dot) {
+      const f = DOT_FREQ[dot] || 950;
+      this.tone(f, 0.16, "sine", 0.3);
+    },
     ok() { this.tone(660, 0.12); setTimeout(() => this.tone(990, 0.18), 110); },
     bad() { this.tone(150, 0.28, "square", 0.12); }
   };
 
-  const BUZZ_MS = 90;
-  const BUZZ_GAP = 90;
-  let lastBuzz = 0;
+  const DOT_FREQ = {
+    1: 523, 2: 440, 3: 349,
+    4: 698, 5: 587, 6: 466
+  };
 
-  function buzzOnce() {
-    if (!hasVibrate) return;
-    const now = Date.now();
-    if (now - lastBuzz < BUZZ_GAP) return;
-    lastBuzz = now;
-    try { navigator.vibrate(BUZZ_MS); } catch (e) {}
+  let buzzLoop = null;
+
+  function buzzOn() {
+    if (!hasVibrate || buzzLoop) return;
+    try { navigator.vibrate(70); } catch (e) {}
+    buzzLoop = setInterval(() => {
+      try { navigator.vibrate(70); } catch (e) {}
+    }, 110);
+  }
+
+  function buzzOff() {
+    if (buzzLoop) { clearInterval(buzzLoop); buzzLoop = null; }
+    if (hasVibrate) { try { navigator.vibrate(0); } catch (e) {} }
   }
 
   function buzzPattern(p) {
@@ -126,10 +183,11 @@
       const dot = el && el.closest ? el.closest(".t-dot") : null;
       if (dot === active) return;
       active = dot;
+      buzzOff();
       if (!dot) return;
       if (dot.dataset.raised === "1") {
-        buzzOnce();
-        if (soundOn) audio.hit();
+        buzzOn();
+        if (soundOn) audio.hit(Number(dot.dataset.dot));
         const host = dot.closest(".tcell");
         if (host) {
           host.classList.remove("pulse");
@@ -148,8 +206,9 @@
       if (e.pointerType === "mouse" && !(e.buttons & 1)) return;
       probe(e.clientX, e.clientY);
     });
-    area.addEventListener("pointerup", () => { active = null; });
-    area.addEventListener("pointerleave", () => { active = null; });
+    area.addEventListener("pointerup", () => { active = null; buzzOff(); });
+    area.addEventListener("pointercancel", () => { active = null; buzzOff(); });
+    area.addEventListener("pointerleave", () => { active = null; buzzOff(); });
 
     area.addEventListener("touchstart", e => {
       audio.ensure();
@@ -163,7 +222,8 @@
       if (t) probe(t.clientX, t.clientY);
       e.preventDefault();
     }, { passive: false });
-    area.addEventListener("touchend", () => { active = null; });
+    area.addEventListener("touchend", () => { active = null; buzzOff(); });
+    area.addEventListener("touchcancel", () => { active = null; buzzOff(); });
     area.addEventListener("contextmenu", e => e.preventDefault());
   }
 
