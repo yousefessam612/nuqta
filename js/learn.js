@@ -219,8 +219,7 @@
       fb.textContent = "ممتاز! النقط صح.";
       fb.classList.add("ok");
     } else {
-      fb.textContent = "نقرت على النقط المنطقية " + on.join("، ") + " — حرف " + writeTarget.name + " نقاطه " + writeTarget.dots.join("، ") +
-        ". افتكر: وضع الكتابة معكوس — النقاط ١، ٢، ٣ في العمود اليمين و٤، ٥، ٦ في الشمال.";
+      fb.textContent = "نقرت على النقط المنطقية " + on.join("، ") + " — حرف " + writeTarget.name + " نقاطه " + writeTarget.dots.join("، ") + ".";
       fb.classList.add("bad");
     }
   });
