@@ -173,6 +173,16 @@ h2 { font-size: 1.8rem; margin: 0 0 26px; }
 .howto { text-align: start; }
 .capability { color: var(--accent); }
 .vibe-check { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 8px 0; }
+.vibe-power { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 10px 0 4px; }
+.vibe-power-label { color: var(--muted); font-weight: 700; font-size: 0.95rem; }
+.vbtn {
+  background: var(--card); color: var(--muted);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 16px; font-family: inherit; font-size: 0.9rem;
+  font-weight: 700; cursor: pointer;
+}
+.vbtn:hover { border-color: var(--accent); }
+.vbtn.active { background: var(--accent); color: #201500; border-color: var(--accent); }
 .vibe-status { color: var(--muted); font-size: 0.9rem; line-height: 1.8; margin: 6px 0 0; }
 .vibe-status div { border-inline-start: 3px solid var(--line); padding-inline-start: 10px; margin-bottom: 2px; }
 .toggle { display: inline-flex; gap: 8px; align-items: center; color: var(--muted); cursor: pointer; }

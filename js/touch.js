@@ -145,18 +145,47 @@
 
   let buzzLoop = null;
 
+  const VIBE_MODES = [
+    { kick: [70], loop: 70, cycle: 115 },
+    { kick: [60, 25, 60], loop: 90, cycle: 50 },
+    { kick: [60, 20, 60, 20, 60], loop: [55, 25, 55, 25, 90], cycle: 125 }
+  ];
+
+  let vibeLevel = 2;
+  try {
+    const saved = parseInt(localStorage.getItem("nuqta.vibepower") || "2", 10);
+    if (saved >= 0 && saved <= 2) vibeLevel = saved;
+  } catch (e) {}
+
   function buzzOn() {
     if (!hasVibrate || buzzLoop) return;
-    try { navigator.vibrate(70); } catch (e) {}
+    const mode = VIBE_MODES[vibeLevel];
+    try { navigator.vibrate(mode.kick); } catch (e) {}
     buzzLoop = setInterval(() => {
-      try { navigator.vibrate(70); } catch (e) {}
-    }, 110);
+      try { navigator.vibrate(mode.loop); } catch (e) {}
+    }, mode.cycle);
   }
 
   function buzzOff() {
     if (buzzLoop) { clearInterval(buzzLoop); buzzLoop = null; }
     if (hasVibrate) { try { navigator.vibrate(0); } catch (e) {} }
   }
+
+  function setVibeLevel(level) {
+    vibeLevel = level;
+    try { localStorage.setItem("nuqta.vibepower", String(level)); } catch (e) {}
+    for (const b of document.querySelectorAll(".vbtn")) {
+      b.classList.toggle("active", Number(b.dataset.p) === level);
+    }
+    const wasOn = !!buzzLoop;
+    buzzOff();
+    if (wasOn) buzzOn();
+  }
+
+  for (const b of document.querySelectorAll(".vbtn")) {
+    b.addEventListener("click", () => { audio.ensure(); setVibeLevel(Number(b.dataset.p)); });
+  }
+  setVibeLevel(vibeLevel);
 
   function buzzPattern(p) {
     if (!hasVibrate) return;
