@@ -301,5 +301,12 @@ body.reader-light .bcell .dot.on { background: var(--accent); box-shadow: none; 
 }
 .visitor-badge:hover { opacity: 1; border-color: var(--accent); color: var(--text); }
 .visitor-badge svg { flex-shrink: 0; }
-.visitor-badge img { display: block; height: 20px; width: auto; max-width: 140px; }
+.visitor-badge .vc-num {
+  color: var(--accent);
+  font-weight: 900;
+  font-size: 1.05rem;
+  min-width: 1ch;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
 body.reader-light .visitor-badge { background: rgba(255, 255, 255, 0.9); }
