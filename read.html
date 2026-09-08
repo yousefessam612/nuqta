@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قراءة — نُقطة</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b1220'/><circle cx='35' cy='30' r='12' fill='%23ffb703'/><circle cx='35' cy='50' r='12' fill='%23ffb703'/><circle cx='35' cy='70' r='12' fill='%23ffb703'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-read">
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-mark ltr">⠿</span> نُقطة</a>
+    <nav class="nav" aria-label="التنقل الرئيسي">
+      <a href="learn.html">تعلّم</a>
+      <a href="touch.html">حسّ النقط</a>
+      <a href="library.html" class="active">المكتبة</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container narrow">
+  <a class="back-link" href="library.html">رجوع للمكتبة</a>
+
+  <div class="empty" id="missing" hidden>
+    <p>الكتاب مش موجود (أو اتحذف).</p>
+    <a class="btn btn-primary" href="library.html">ارجع للمكتبة</a>
+  </div>
+
+  <div id="readerUI">
+    <h1 class="page-title" id="bookTitle"></h1>
+    <p class="book-author" id="bookAuthor"></p>
+    <p class="tts-note" id="ttsNote" hidden>متصفحك ما بيدعمش القراءة الصوتية — هتقدر تقرا النص بس.</p>
+
+    <div class="toolbar">
+      <button id="playBtn" class="btn btn-primary btn-small">شغّل الصوت</button>
+      <button id="stopBtn" class="btn btn-small">إيقاف</button>
+      <button id="prevPara" class="btn btn-small">السابقة</button>
+      <button id="nextPara" class="btn btn-small">التالية</button>
+      <label class="field inline">السرعة
+        <select id="speedSel">
+          <option value="0.75">0.75×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.25">1.25×</option>
+          <option value="1.5">1.5×</option>
+          <option value="2">2×</option>
+        </select>
+      </label>
+      <button id="fontMinus" class="btn btn-small" aria-label="صغّر الخط">أ−</button>
+      <button id="fontPlus" class="btn btn-small" aria-label="كبّر الخط">أ+</button>
+      <button id="contrastBtn" class="btn btn-small">تباين عالٍ</button>
+      <button id="brailleBtn" class="btn btn-small">برايل</button>
+      <div class="dl-group">
+        <label class="field inline">عرض السطر
+          <select id="widthSel">
+            <option value="32">٣٢ خلية</option>
+            <option value="40" selected>٤٠ خلية</option>
+            <option value="42">٤٢ خلية</option>
+          </select>
+        </label>
+        <button id="brfBtn" class="btn btn-primary btn-small">نزّل BRF للطباعة</button>
+        <button id="uniBtn" class="btn btn-small">نزّل برايل يونيكود</button>
+      </div>
+    </div>
+
+    <section class="braille-panel" id="braillePanel" hidden>
+      <p class="braille-label" id="brailleLabel">ترجمة الفقرة الحالية</p>
+      <div class="braille-cells" id="brailleCells"></div>
+    </section>
+
+    <article id="readerBody"></article>
+  </div>
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/brf.js"></script>
+<script src="js/read.js"></script>
+</body>
+</html>

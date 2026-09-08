@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تعلّم — نُقطة</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b1220'/><circle cx='35' cy='30' r='12' fill='%23ffb703'/><circle cx='35' cy='50' r='12' fill='%23ffb703'/><circle cx='35' cy='70' r='12' fill='%23ffb703'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-learn">
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-mark ltr">⠿</span> نُقطة</a>
+    <nav class="nav" aria-label="التنقل الرئيسي">
+      <a href="learn.html" class="active">تعلّم</a>
+      <a href="touch.html">حسّ النقط</a>
+      <a href="library.html">المكتبة</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h1 class="page-title">تعلّم برايل العربي</h1>
+
+  <div class="tabs" role="tablist" aria-label="أنماط التعلم">
+    <button class="tab active" data-mode="learn" role="tab" aria-selected="true">الدرس</button>
+    <button class="tab" data-mode="quiz" role="tab" aria-selected="false">اختبار القراءة</button>
+    <button class="tab" data-mode="write" role="tab" aria-selected="false">اختبار الكتابة</button>
+  </div>
+
+  <section id="learn" class="mode active" role="tabpanel" aria-label="الدرس">
+    <div class="lesson-card">
+      <button id="prevLetter" class="btn btn-icon" aria-label="الحرف السابق">›</button>
+      <div class="lesson-body">
+        <div class="letter-ar" id="letterAr">ا</div>
+        <div class="letter-name" id="letterName">أَلِف</div>
+        <div class="bcell big" id="lessonCell"></div>
+        <p class="dots-line">النقاط: <span class="dots-num ltr" id="dotsLabel">1</span></p>
+        <div class="example">
+          <button id="speakBtn" class="btn btn-small">اسمع</button>
+          <span class="example-word" id="exampleWord">اسم</span>
+          <span class="bword" id="exampleBraille"></span>
+        </div>
+        <div class="lesson-actions">
+          <button id="markDone" class="btn btn-small">علّمه كمكتمل</button>
+        </div>
+      </div>
+      <button id="nextLetter" class="btn btn-icon" aria-label="الحرف التالي">‹</button>
+    </div>
+    <div class="letter-picker" id="letterPicker" aria-label="اختر حرفًا"></div>
+    <p class="progress-line">أنجزت <span id="progressCount">0</span> من ٢٨ حرفًا</p>
+  </section>
+
+  <section id="quiz" class="mode" role="tabpanel" aria-label="اختبار القراءة">
+    <div class="quiz-card">
+      <p class="quiz-prompt">أي حرف تمثّله هذه النقط؟</p>
+      <div class="bcell big" id="quizCell"></div>
+      <div class="options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback" role="status" aria-live="polite"></div>
+      <div class="quiz-score">النتيجة: <span id="quizScore">0</span> — أفضل نتيجة: <span id="quizBest">0</span></div>
+      <button id="quizNext" class="btn btn-primary">سؤال جديد</button>
+    </div>
+  </section>
+
+  <section id="write" class="mode" role="tabpanel" aria-label="اختبار الكتابة">
+    <div class="write-card">
+      <p class="quiz-prompt">انقر على النقط لتكوين هذا الحرف</p>
+      <div class="letter-ar medium" id="writeLetter">ب</div>
+      <div class="bcell big interactive" id="writeCell"></div>
+      <div class="lesson-actions">
+        <button id="writeCheck" class="btn btn-primary">تحقّق</button>
+        <button id="writeNext" class="btn btn-ghost">حرف جديد</button>
+      </div>
+      <div class="quiz-feedback" id="writeFeedback" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/learn.js"></script>
+</body>
+</html>

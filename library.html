@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المكتبة — نُقطة</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b1220'/><circle cx='35' cy='30' r='12' fill='%23ffb703'/><circle cx='35' cy='50' r='12' fill='%23ffb703'/><circle cx='35' cy='70' r='12' fill='%23ffb703'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-library">
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-mark ltr">⠿</span> نُقطة</a>
+    <nav class="nav" aria-label="التنقل الرئيسي">
+      <a href="learn.html">تعلّم</a>
+      <a href="touch.html">حسّ النقط</a>
+      <a href="library.html" class="active">المكتبة</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h1 class="page-title">المكتبة</h1>
+
+  <div class="add-bar">
+    <button id="addBtn" class="btn btn-primary">أضف كتابًا</button>
+    <button id="sampleBtn" class="btn btn-ghost">أضف كتابًا تجريبيًا</button>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="ابحث بالعنوان أو المؤلف…" aria-label="ابحث في الكتب">
+    </div>
+  </div>
+
+  <section class="panel" id="addPanel" hidden>
+    <form id="addForm">
+      <div class="field">
+        <label for="fTitle">العنوان</label>
+        <input type="text" id="fTitle" required maxlength="120">
+      </div>
+      <div class="field">
+        <label for="fAuthor">المؤلف (اختياري)</label>
+        <input type="text" id="fAuthor" maxlength="120">
+      </div>
+      <div class="field">
+        <label for="fText">نص الكتاب</label>
+        <textarea id="fText" required placeholder="الصق نص الكتاب هنا… افصل الفقرات بسطر جديد."></textarea>
+      </div>
+      <div class="file-row">
+        <label class="btn btn-ghost btn-small" for="fileInput">أو استورد ملف ‎.txt</label>
+        <input type="file" id="fileInput" accept=".txt,text/plain" hidden>
+        <span class="file-name" id="fileName"></span>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">احفظ الكتاب</button>
+        <button type="button" class="btn btn-ghost" id="cancelAdd">إلغاء</button>
+      </div>
+    </form>
+  </section>
+
+  <div class="empty" id="empty" hidden>
+    <p>رفوفك لسه فاضية.</p>
+    <p class="muted">اضغط «أضف كتابًا» والصق نص أي كتاب عندك — أو جرّب الكتاب التجريبي.</p>
+  </div>
+
+  <div class="shelf" id="shelf"></div>
+  <p class="progress-line">عندك <span id="countBooks">0</span> كتاب في الرف</p>
+</main>
+
+<script src="js/library.js"></script>
+</body>
+</html>
