@@ -139,9 +139,6 @@ h2 { font-size: 1.8rem; margin: 0 0 26px; }
 .bword { display: inline-flex; gap: 8px; }
 
 .write-note { color: var(--muted); font-size: 0.92rem; line-height: 1.8; margin: 0 0 14px; }
-.bcell.write .dot { display: flex; align-items: center; justify-content: center; }
-.bcell.write .dot::after { content: attr(data-dot); font-size: 0.8rem; font-weight: 700; color: var(--muted); }
-.bcell.write .dot.on::after { color: #201500; }
 
 .bcell.demo { animation: popIn 0.5s ease backwards; }
 @keyframes popIn { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
