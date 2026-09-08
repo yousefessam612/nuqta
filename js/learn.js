@@ -217,7 +217,8 @@
       fb.textContent = "ممتاز! النقط صح.";
       fb.classList.add("ok");
     } else {
-      fb.textContent = "مش مظبوط — حرف " + writeTarget.name + " نقاطه: " + writeTarget.dots.join("، ");
+      fb.textContent = "نقرت على النقط " + on.join("، ") + " — حرف " + writeTarget.name + " نقاطه " + writeTarget.dots.join("، ") +
+        ". افتكر: في وضع الكتابة النقط ١،٢،٣ في العمود اليمين.";
       fb.classList.add("bad");
     }
   });
