@@ -5,9 +5,22 @@
   const soundToggle = $("soundToggle");
   soundToggle.addEventListener("change", () => { soundOn = soundToggle.checked; });
 
+  $("vibeTest").addEventListener("click", () => {
+    const st = $("vibeStatus");
+    if (!hasVibrate) {
+      st.textContent = "المتصفح ده ما بيدعمش الاهتزاز (زي سفاري آيفون) — سيب الصوت شغّال.";
+      return;
+    }
+    let ok = false;
+    try { ok = navigator.vibrate([150, 80, 150]); } catch (e) { ok = false; }
+    st.textContent = ok
+      ? "تمّ إرسال أمر الاهتزاز — لو محسّيتش بحاجة: افحص وضع الصوت والاهتزاز في إعدادات الجهاز (أو وضع توفير الطاقة)، أو جرّب متصفح كروم."
+      : "المتصفح رفض أمر الاهتزاز — جرّب متصفح كروم أو فايرفوكس، أو اعتمد على الصوت.";
+  });
+
   const hasVibrate = "vibrate" in navigator;
   $("capLine").textContent = hasVibrate
-    ? "جهازك يدعم الاهتزاز: هتحس بكل نقطة عند لمسها."
+    ? "متصفحك يقول إنه يدعم الاهتزاز — لو مش شغال معاك استخدم زر الاختبار تحت."
     : "متصفحك ما يدعمش الاهتزاز (زي سفاري على آيفون) — سيب الصوت شغّال: كل نقطة تصفّرة.";
 
   const audio = {
@@ -39,8 +52,21 @@
     bad() { this.tone(150, 0.28, "square", 0.12); }
   };
 
-  function buzz(pattern) {
-    if (hasVibrate) navigator.vibrate(pattern);
+  const BUZZ_MS = 90;
+  const BUZZ_GAP = 90;
+  let lastBuzz = 0;
+
+  function buzzOnce() {
+    if (!hasVibrate) return;
+    const now = Date.now();
+    if (now - lastBuzz < BUZZ_GAP) return;
+    lastBuzz = now;
+    try { navigator.vibrate(BUZZ_MS); } catch (e) {}
+  }
+
+  function buzzPattern(p) {
+    if (!hasVibrate) return;
+    try { navigator.vibrate(p); } catch (e) {}
   }
 
   function buildTouchCell(dots, small) {
@@ -65,7 +91,7 @@
       active = dot;
       if (!dot) return;
       if (dot.dataset.raised === "1") {
-        buzz(40);
+        buzzOnce();
         if (soundOn) audio.hit();
         const host = dot.closest(".tcell");
         if (host) {
@@ -87,6 +113,20 @@
     });
     area.addEventListener("pointerup", () => { active = null; });
     area.addEventListener("pointerleave", () => { active = null; });
+
+    area.addEventListener("touchstart", e => {
+      audio.ensure();
+      active = null;
+      const t = e.touches[0];
+      if (t) probe(t.clientX, t.clientY);
+      e.preventDefault();
+    }, { passive: false });
+    area.addEventListener("touchmove", e => {
+      const t = e.touches[0];
+      if (t) probe(t.clientX, t.clientY);
+      e.preventDefault();
+    }, { passive: false });
+    area.addEventListener("touchend", () => { active = null; });
     area.addEventListener("contextmenu", e => e.preventDefault());
   }
 
@@ -108,8 +148,8 @@
   }
 
   function celebrate(correct) {
-    if (correct) { audio.ok(); buzz([70, 40, 70]); }
-    else { audio.bad(); buzz(220); }
+    if (correct) { audio.ok(); buzzPattern([120, 60, 120]); }
+    else { audio.bad(); buzzPattern(260); }
   }
 
   function buildReveal(letter) {
