@@ -30,6 +30,20 @@ const BRAILLE_LETTERS = [
 ];
 
 const DOT_GRID_ORDER = [1, 4, 2, 5, 3, 6];
+const DOT_GRID_ORDER_WRITE = [4, 1, 5, 2, 6, 3];
+
+function makeCell(dots, extraClass, mirrored) {
+  const cell = document.createElement("div");
+  cell.className = "bcell" + (extraClass ? " " + extraClass : "");
+  const order = mirrored ? DOT_GRID_ORDER_WRITE : DOT_GRID_ORDER;
+  for (const d of order) {
+    const dot = document.createElement("span");
+    dot.className = "dot " + (dots.includes(d) ? "on" : "off");
+    dot.dataset.dot = String(d);
+    cell.appendChild(dot);
+  }
+  return cell;
+}
 
 function dotsToBraille(dots) {
   let code = 0;

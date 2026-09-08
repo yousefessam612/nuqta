@@ -194,7 +194,7 @@
     $("writeLetter").textContent = writeTarget.ar;
     const host = $("writeCell");
     host.innerHTML = "";
-    host.appendChild(makeCell([], "big interactive"));
+    host.appendChild(makeCell([], "big interactive write", true));
     for (const dot of host.querySelectorAll(".dot")) {
       dot.addEventListener("click", () => {
         dot.classList.toggle("on");
